@@ -4,25 +4,40 @@
     "description": "Coursework on the subject 'Programming Technologies'.",
     "version": "1.0",
     "author": "Slava Sovan",
-    "permissions": [],
-    "host_permissions": [
-        "<all_urls>"
-    ],
+    "background": {
+        "service_worker": "background.js"
+    },
     "content_scripts": [
         {
             "matches": [
                 "*://*/*"
             ],
             "exclude_matches": [
-                "*://www.google.com/*",
-                "*://www.yandex.ru/*"
+                "*://*.google.com/*",
+                "*://*.yandex.ru/*",
+                "*://*.bing.com/*"
             ],
             "js": [
                 "content.js"
             ]
         }
     ],
-    "background": {
-        "service_worker": "content.js"
-    }
+    "host_permissions": [
+        "<all_urls>"
+    ],
+    "permissions": [
+        "activeTab",
+        "scripting",
+        "webNavigation"
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "filters.json"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
+        }
+    ]
 }

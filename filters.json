@@ -1,0 +1,21 @@
+{
+    "whitelist_of_doms": [
+        "youtube.com",
+        "vimeo.com",
+        "rutube.ru",
+        "vk.com",
+        "t.me",
+        "maps.google.com",
+        "maps.yandex.ru"
+    ],
+    "blacklist_id": [
+        "adfox",
+        "advert",
+        "adfin",
+        "adriver",
+        "sponsored",
+        "ad-banner",
+        "foxadd",
+        "foxad"
+    ]
+}
