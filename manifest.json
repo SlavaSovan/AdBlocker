@@ -5,7 +5,10 @@
     "version": "1.0",
     "author": "Slava Sovan",
     "background": {
-        "service_worker": "background.js"
+        "service_worker": "scripts/background.js"
+    },
+    "action": {
+        "default_popup": "popup/popup.html"
     },
     "content_scripts": [
         {
@@ -18,7 +21,7 @@
                 "*://*.bing.com/*"
             ],
             "js": [
-                "content.js"
+                "scripts/content.js"
             ]
         }
     ],
@@ -26,6 +29,8 @@
         "<all_urls>"
     ],
     "permissions": [
+        "tabs",
+        "storage",
         "activeTab",
         "scripting",
         "webNavigation"
@@ -33,7 +38,7 @@
     "web_accessible_resources": [
         {
             "resources": [
-                "filters.json"
+                "resources/filters.json"
             ],
             "matches": [
                 "<all_urls>"

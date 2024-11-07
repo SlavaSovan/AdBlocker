@@ -6,7 +6,7 @@
     async function getFilters() {
         try {
             const response = await fetch(
-                chrome.runtime.getURL('filters.json')
+                chrome.runtime.getURL('./resources/filters.json')
             );
             const data = await response.json();
             whitelist_domains = data.whitelist_of_doms;
@@ -108,26 +108,32 @@
         }
     }
 
-    getFilters().then(() => {
-        const observer = new MutationObserver(() => {
-            removeAdsByClassAndId();
+    chrome.storage.sync.get("enabled", (data) => {
+        const state = data.enabled || false;
 
-            document.querySelectorAll("iframe").forEach(
-                iframe => { removeIframes(iframe); }
-            );
+        if (state) {
+            getFilters().then(() => {
+                const observer = new MutationObserver(() => {
+                    removeAdsByClassAndId();
 
-            document.querySelectorAll("a").forEach(
-                link => {
-                    if (isExternalLink(link.href)) {
-                        findAndRemoveExternalContainer(link);
-                    }
-                }
-            );
-        });
+                    document.querySelectorAll("iframe").forEach(
+                        iframe => { removeIframes(iframe); }
+                    );
 
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
+                    document.querySelectorAll("a").forEach(
+                        link => {
+                            if (isExternalLink(link.href)) {
+                                findAndRemoveExternalContainer(link);
+                            }
+                        }
+                    );
+                });
+
+                observer.observe(document.body, {
+                    childList: true,
+                    subtree: true
+                });
+            });
+        }
     });
 })();
