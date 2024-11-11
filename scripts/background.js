@@ -28,3 +28,12 @@ chrome.webNavigation.onCommitted.addListener(
         }
     }
 );
+
+chrome.commands.onCommand.addListener((command) => {
+    if (command === "Remove element") {
+        chrome.storage.sync.get("removeModeActive", (data) => {
+            const removeModeEnabled = !data.removeModeActive;
+            chrome.storage.sync.set({ removeModeActive: removeModeEnabled });
+        });
+    }
+});

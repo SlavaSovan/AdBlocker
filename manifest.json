@@ -31,6 +31,15 @@
             ]
         }
     ],
+    "commands": {
+        "Remove element": {
+            "suggested_key": {
+                "default": "Ctrl+B",
+                "mac": "Command+B"
+            },
+            "description": "Removes the selected element from the page."
+        }
+    },
     "host_permissions": [
         "<all_urls>"
     ],

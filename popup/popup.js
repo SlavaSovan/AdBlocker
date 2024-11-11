@@ -1,7 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
     const display_domain = document.getElementById("displayDomain");
+    const state = document.getElementById("switchToggle");
+    const removeButton = document.getElementById("removeButton");
 
-    chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         const tab = tabs[0];
         try {
             const url = new URL(tab.url);
@@ -12,8 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    const state = document.getElementById("switchToggle");
-
     chrome.storage.sync.get("enabled", (data) => {
         state.checked = data.enabled || false;
     });
@@ -21,5 +21,17 @@ document.addEventListener("DOMContentLoaded", () => {
     state.addEventListener("change", () => {
         const new_state = state.checked;
         chrome.storage.sync.set({ enabled: new_state });
+    });
+
+    removeButton.addEventListener("click", () => {
+        chrome.storage.sync.get("removeModeActive", (data) => {
+            chrome.storage.sync.set({ removeModeActive: !data.removeModeActive });
+        });
+    });
+
+    chrome.storage.onChanged.addListener((changes) => {
+        if (changes.removeModeActive) {
+            removeButton.textContent = changes.removeModeActive.newValue ? "Cancel" : "Remove element";
+        }
     });
 });

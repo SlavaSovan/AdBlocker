@@ -4,10 +4,21 @@ body {
     text-align: center;
 }
 
+#displayDomain {
+    margin: 0 4px;
+    color: silver;
+    max-width: 140px;
+}
+
 .ctrl {
-    font-size: 32px;
-    text-align: center;
-    padding-bottom: 20px;
+    font-size: 30px;
+    font-weight: 500;
+    margin: 8px 0px;
+}
+
+.hint {
+    margin-top: 4px;
+    color: silver;
 }
 
 .switchToggle {
@@ -16,6 +27,8 @@ body {
     width: 100px;
     height: 50px;
     border-radius: 50%;
+    margin-bottom: 35px;
+    margin-top: 20px;
 }
 
 input[type="checkbox"] {
@@ -23,8 +36,8 @@ input[type="checkbox"] {
     height: 0;
 }
 
-input[type="checkbox"]:focus+.toggle {
-    box-shadow: 0px 0px 2px #606060;
+input[type="checkbox"]:hover+.toggle {
+    box-shadow: 0px 0px 3px #a3a3a3;
 }
 
 .toggle {
@@ -36,6 +49,7 @@ input[type="checkbox"]:focus+.toggle {
     right: 0;
     border-radius: 50px;
     background-color: silver;
+    transition: .5s;
 }
 
 .toggle::before {
@@ -48,15 +62,35 @@ input[type="checkbox"]:focus+.toggle {
     height: 46px;
     border-radius: 50%;
     background-color: white;
-    transition: 0.5s;
+    transition: .5s;
 }
 
 input[type="checkbox"]:checked+.toggle {
-    background-color: cornflowerblue;
+    background-color: darkblue;
 }
 
 input[type="checkbox"]:checked+.toggle::before {
     transform: translateX(50px);
     -webkit-transform: translateX(50px);
-    transition: 0.5s;
+    transition: .5s;
+}
+
+#removeButton {
+    width: 140px;
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+    background-color: darkblue;
+    font-size: 14px;
+    color: white;
+    transition: .5s;
+}
+
+#removeButton:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 2px 0px #a3a3a3;
+}
+
+#removeButton:active {
+    transform: scale(0.96);
 }
