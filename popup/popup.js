@@ -16,6 +16,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     chrome.storage.sync.get("enabled", (data) => {
         state.checked = data.enabled || false;
+        state.classList.add("no-animation");
+
+        setTimeout(() => {
+            state.classList.remove("no-animation");
+        }, 10);
     });
 
     state.addEventListener("change", () => {

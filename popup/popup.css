@@ -2,6 +2,7 @@ body {
     width: 160px;
     height: 240px;
     text-align: center;
+    background-color: white;
 }
 
 #displayDomain {
@@ -73,6 +74,11 @@ input[type="checkbox"]:checked+.toggle::before {
     transform: translateX(50px);
     -webkit-transform: translateX(50px);
     transition: .5s;
+}
+
+.no-animation+.toggle,
+.no-animation+.toggle::before {
+    transition: none !important;
 }
 
 #removeButton {
