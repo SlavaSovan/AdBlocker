@@ -11,15 +11,25 @@
 <body>
     <span id="displayDomain"></span>
 
-    <div class="ctrl">CONTROL</div>
+    <div class="tabs">
+        <button class="tab active" id="tab-main">Control</button>
+        <button class="tab" id="tab-removed">Removed</button>
+    </div>
 
-    <label class="switchToggle">
-        <input id="switchToggle" type="checkbox" checked>
-        <span class="toggle"></span>
-    </label>
+    <div class="tab-content active" id="main-content">
 
-    <button id="removeButton">Remove element</button>
-    <div class="hint">or ctrl+B/command+B</div>
+        <label class="switchToggle">
+            <input id="switchToggle" type="checkbox" checked>
+            <span class="toggle"></span>
+        </label>
+
+        <button id="removeButton">Remove element</button>
+        <div class="hint">or ctrl+B/command+B</div>
+    </div>
+
+    <div class="tab-content" id="removed-content">
+        <ul id="removedList"></ul>
+    </div>
 
     <script src="popup.js"></script>
 </body>

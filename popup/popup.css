@@ -1,6 +1,6 @@
 body {
-    width: 160px;
-    height: 240px;
+    width: 180px;
+    height: 260px;
     text-align: center;
     background-color: white;
 }
@@ -11,15 +11,48 @@ body {
     max-width: 140px;
 }
 
-.ctrl {
-    font-size: 30px;
-    font-weight: 500;
-    margin: 8px 0px;
+.tabs {
+    display: inline-flex;
+    justify-content: space-around;
+    margin-top: 8px;
 }
 
-.hint {
-    margin-top: 4px;
-    color: silver;
+.tab {
+    margin: 4px;
+    width: 80px;
+    height: 40px;
+    margin-top: 0px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
+    background-color: silver;
+    color: black;
+    border: none;
+    border-radius: 20px;
+    transition: .5s;
+}
+
+.tab.active {
+    color: #fff;
+    background-color: darkblue;
+}
+
+.tab-content {
+    display: none;
+    padding: 10px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 0px 2px #a3a3a3;
+}
+
+.tab:active {
+    transform: scale(0.96);
 }
 
 .switchToggle {
@@ -38,7 +71,7 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:hover+.toggle {
-    box-shadow: 0px 0px 3px #a3a3a3;
+    box-shadow: 0px 0px 4px #a3a3a3;
 }
 
 .toggle {
@@ -82,10 +115,10 @@ input[type="checkbox"]:checked+.toggle::before {
 }
 
 #removeButton {
-    width: 140px;
-    height: 40px;
+    width: 160px;
+    height: 50px;
     border: none;
-    border-radius: 20px;
+    border-radius: 25px;
     background-color: darkblue;
     font-size: 14px;
     color: white;
@@ -94,9 +127,75 @@ input[type="checkbox"]:checked+.toggle::before {
 
 #removeButton:hover {
     transform: scale(1.02);
-    box-shadow: 0px 2px 0px #a3a3a3;
+    box-shadow: 0px 0px 2px #a3a3a3;
 }
 
 #removeButton:active {
+    transform: scale(0.96);
+}
+
+.hint {
+    margin-top: 4px;
+    margin-bottom: 5px;
+    color: silver;
+}
+
+#removed-content {
+    width: 160px;
+    height: 160px;
+    margin-top: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#removedList {
+    font-size: 12px;
+    line-height: 1.2;
+    margin: 0px;
+    padding: 0px;
+
+    li {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+    }
+}
+
+#removed-content::-webkit-scrollbar {
+    width: 8px;
+    background-color: silver;
+    border-radius: 4px;
+}
+
+#removed-content::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: darkblue;
+}
+
+#removed-content::-webkit-scrollbar-track {
+    box-shadow: inset 0px 0px 2px #a3a3a3;
+    border-radius: 10px;
+}
+
+.rstr_btn {
+    width: 80px;
+    height: 30px;
+    background-color: darkblue;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    transition: .5s;
+    text-align: center;
+    margin-left: 30px;
+    margin-top: 6px;
+    margin-bottom: 10px;
+}
+
+.rstr_btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 0px 2px #a3a3a3;
+}
+
+.rstr_btn:active {
     transform: scale(0.96);
 }

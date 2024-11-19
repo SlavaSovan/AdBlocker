@@ -2,9 +2,12 @@
     let cur_dom = window.location.hostname;
     let whitelist_domains = [];
     let blacklist_id_cl = [];
+    let removedElements = [];
     let removeModeEnabled = false;
     let lastHighlightedElement = null;
 
+    //Получение фильтров (допустимые домены, нежелательные
+    //классы или id)
     async function getFilters() {
         try {
             const response = await fetch(
@@ -110,21 +113,25 @@
         }
     }
 
+    //Переход в режим ручнного удаления элементов
     function removeMode(isEnabled) {
         removeModeEnabled = isEnabled;
 
         if (removeModeEnabled) {
             document.addEventListener("mouseover", highlightElement);
             document.addEventListener("mouseout", removeHighlight);
-            document.addEventListener("click", removeElement, true);
+            document.addEventListener("click", ElementToRemove, true);
         } else {
             removeLastHighlight()
+
             document.removeEventListener("mouseover", highlightElement);
             document.removeEventListener("mouseout", removeHighlight);
-            document.removeEventListener("click", removeElement, true);
+            document.removeEventListener("click", ElementToRemove, true);
         }
+        return;
     }
 
+    //Выделение элементов в режиме удаления
     function highlightElement(event) {
         if (removeModeEnabled) {
             removeLastHighlight();
@@ -133,35 +140,95 @@
             event.target.style.outline = "2px solid darkblue";
             event.target.style.backgroundColor = "#c8e3f0";
         }
+        return;
     }
 
+    //Удаление выделения элементов
     function removeHighlight(event) {
         if (removeModeEnabled) {
             event.target.style.outline = "";
             event.target.style.backgroundColor = "";
             lastHighlightedElement = null;
+            return;
         }
+        return;
     }
 
-    function removeElement(event) {
+    //Добавление в список удалённых элементов
+    function ElementToRemove(event) {
         if (removeModeEnabled) {
             event.preventDefault();
             event.stopPropagation();
-            event.target.remove();
-            chrome.storage.sync.set({ removeModeActive: false });
+
+            const element = event.target;
+
+            const elementPath = getUniquePath(element);
+            removedElements.push(elementPath);
+
+            chrome.storage.sync.get([cur_dom], (data) => {
+                const domainData = data[cur_dom] || [];
+                domainData.push(elementPath);
+                chrome.storage.sync.set({ [cur_dom]: domainData });
+            });
+
+            chrome.storage.sync.set({ removeModeActive: false })
         }
+        return;
     }
 
+    //Удаление последнего выделение с элемента
     function removeLastHighlight() {
         if (lastHighlightedElement) {
             lastHighlightedElement.style.outline = "";
             lastHighlightedElement.style.backgroundColor = "";
             lastHighlightedElement = null;
         }
+        return;
     }
 
 
+    //Создание пути к элементу для запоминания
+    //удалённых элементов
+    function getUniquePath(element) {
+        const path = [];
+        while (element && element.nodeType === Node.ELEMENT_NODE) {
+            let selector = element.nodeName.toLowerCase();
+
+            if (element.id) {
+                selector += `#${element.id}`;
+            } else {
+                let sibling = element;
+                let nth = 1;
+                while ((sibling = sibling.previousElementSibling) !== null) {
+                    if (sibling.nodeName.toLowerCase() === selector) nth++;
+                }
+                if (nth > 1) selector += `:nth-of-type(${nth})`;
+            }
+            path.unshift(selector);
+            element = element.parentElement;
+        }
+        return path.join(" > ");
+    }
+
+    //Удаление элемента
+    function removeElements() {
+        chrome.storage.sync.get([cur_dom], (data) => {
+            const domain_data = data[cur_dom] || [];
+            domain_data.forEach((path) => {
+                const element = document.querySelector(path);
+                if (element) {
+                    element.remove();
+                }
+            });
+        });
+        return;
+    }
+
+    // Обработчик событий при изменениях в chrome.storage
     chrome.storage.onChanged.addListener((changes) => {
+        if (changes[cur_dom] && !changes.removeModeActive) {
+            removeElements();
+        }
         if (changes.removeModeActive) {
             removeMode(changes.removeModeActive.newValue);
         }
@@ -187,6 +254,8 @@
                             }
                         }
                     );
+
+                    removeElements();
                 });
 
                 observer.observe(document.body, {
